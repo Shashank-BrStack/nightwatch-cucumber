@@ -1,0 +1,21 @@
+{
+  "name": "pro2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e:nightwatch-api": "cucumber-js --require hooks.js --require step_definitions --format node_modules/cucumber-pretty"
+  },
+  "keywords": [
+    "nightwatch-api",
+    "cucumber"
+  ],
+  "author": "Shashank",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "chromedriver": "^129.0.1",
+    "cucumber": "^6.0.7",
+    "cucumber-pretty": "^6.0.1",
+    "nightwatch-api": "^3.0.2"
+  }
+}
