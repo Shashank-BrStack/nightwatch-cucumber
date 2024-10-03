@@ -1,70 +1,53 @@
-const { Given, Then, When } = require("cucumber");
-const { client } = require("nightwatch-api");
+// const { Given, Then, When } = require("cucumber");
+// const { client } = require("nightwatch-api");
 
-// // Given('I open Bing search page {string}', function (string) {
-// //     // Write code here that turns the phrase above into concrete actions
-// //     return client.url(string).waitForElementVisible('body', 1000);
-// // });
+// // // Working code from here..................................
+// Given('I open Flipkart homepage {string}', async function (string) {
+//     // Write code here that turns the phrase above into concrete actions
+//     await client.url(string);
+//     await waitForElementVisible('img[title="Flipkart"]',5000);
+// });
 
-// // Then('the title is {string}', function (string) {
-// //     // Write code here that turns the phrase above into concrete actions
-// //     return client.assert.title(string);
-// // });
+// When('I search for a product {string}', async function (string) {
+//     // Write code here that turns the phrase above into concrete actions
+//     await client.setValue('input[name="q"]',string);
+//     await click('button[type="submit"]');
+//     await client.url(string);
+//     await waitForElementVisible('img[title="Flipkart"]',5000);
+// });
 
+// Then('I should see search results containing {string}', async function (string) {
+//     // Write code here that turns the phrase above into concrete actions
+//     await client.assert.element('div[class="KzDlHZ"]').text.to.contain(string);
+//     // assert.textContains('div[class="KzDlHZ"]', string)
+// });
 
-// // Working code from here..................................
-Given('I open Flipkart homepage {string}', function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    return client.url(string).waitForElementVisible('img[title="Flipkart"]',5000);
+const { Given, When, Then } = require('@cucumber/cucumber');
+const { client } = require('nightwatch-api');
+const assert = require('assert');
+
+Given('I open Flipkart homepage {string}', async function (string) {
+  await client.url(string);
+  await client.waitForElementVisible('body', 10000);
+  console.log('step-1');
 });
 
-When('I search for a product {string}', function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    client.setValue('input[name="q"]',string).click('button[type="submit"]');
-    return client.url(string).waitForElementVisible('img[title="Flipkart"]',5000);
+When('I search for a product {string}', async function (string) {
+  await client.setValue('input[name="q"]', string);
+  console.log('step2-1');
+  await client.click('button[type="submit"]');
+  console.log('step-2-2');
+  console.log('step-2-3');
 });
 
-Then('I should see search results containing {string}', function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    return client.expect.element('div[class="KzDlHZ"]').text.to.contain(string);
-    // assert.textContains('div[class="KzDlHZ"]', string)
+Then('I should see search results containing {string}', async function (string) {
+  // await client.pause(3000);
+  const searchResult = await client.getText({
+    selector: '.KzDlHZ',
+    timeout: 10000
+  }, (result) => {
+    console.log('THIS IS MY SEARCH RESULT', result.value);
+    console.log(string);
+    assert(result.value.toLowerCase().includes(string.toLowerCase()));
+  }); // Adjust this selector as necessary
 });
-
-
-// module.exports = function() {
-
-//     Given(/^I open Flipkart homepage$/, function(browser) {
-//       // Navigate to Flipkart homepage
-//       browser
-//         .url('https://www.flipkart.com')
-//         .waitForElementVisible('body', 10000)  // Wait for the body element to be visible
-//         .assert.titleContains('Flipkart');     // Assert the page title contains 'Flipkart'
-//     });
-  
-//     this.When(/^I search for a product "([^"]*)"$/, function(product, browser) {
-//       // Handle the login popup if it appears
-//       browser
-//         .waitForElementVisible('body', 5000)
-//         .execute(function() {
-//           const closeButton = document.querySelector('button._2KpZ6l._2doB4z');
-//           if (closeButton) {
-//             closeButton.click();
-//           }
-//         });
-  
-//       // Enter the product name in the search bar and submit the search
-//       browser
-//         .setValue('input[name="q"]', product)  // Enter the product in the search input field
-//         .keys(browser.Keys.ENTER)             // Press the Enter key to submit the search
-//         .pause(3000);                         // Wait for the results to load
-//     });
-  
-//     this.Then(/^I should see search results containing "([^"]*)"$/, function(product, browser) {
-//       // Check if the search results page contains the product name in the results
-//       browser
-//         .assert.containsText('div._1YokD2', product)  // Assert that product name is in the search results section
-//         .end();  // Close the browser at the end of the test
-//     });
-  
-//   };
-  
