@@ -1,0 +1,16 @@
+{
+  "name": "cucumber-nightwatch-flipkart",
+  "version": "1.0.0",
+  "description": "Flipkart product search with Nightwatch and Cucumber",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js --require hooks.js --require step_definitions"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "latest",
+    "nightwatch": "latest",
+    "chromedriver": "^102.0.0",
+    "browserstack-local": "^1.5.0",
+    "nightwatch-api": "latest"
+  }
+}
